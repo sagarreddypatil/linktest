@@ -1,0 +1,19 @@
+{
+  "name": "linktest",
+  "version": "0.0.1",
+  "description": "A simple graphical utility to test network performance between two points",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sagarreddypatil/linktest.git"
+  },
+  "author": "Sagar Patil",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sagarreddypatil/linktest/issues"
+  },
+  "homepage": "https://github.com/sagarreddypatil/linktest#readme"
+}
