@@ -58,6 +58,7 @@ server.on("message", (msg, rinfo) => {
   }
 
   window.discovered.set(data.name, data.ip);
+  generateDevicesTable();
   console.log(`Discovered ${data.name} at ${data.ip}`);
 
   if (!data.requestDiscovery) return;
@@ -65,3 +66,14 @@ server.on("message", (msg, rinfo) => {
   console.log(`Sending discovery response to ${data.name}`);
   sendDiscovery(false, rinfo.address);
 });
+
+let devicesTable = document.getElementById("devices-table");
+function generateDevicesTable() {
+  devicesTable.innerHTML = "";
+
+  for (let [name, ip] of window.discovered) {
+    let row = document.createElement("tr");
+    row.innerHTML = `<td>${name}</td><td>${ip}</td>`;
+    devicesTable.appendChild(row);
+  }
+}
