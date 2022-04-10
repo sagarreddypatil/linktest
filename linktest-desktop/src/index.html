@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello World!</title>
+    <link
+      rel="stylesheet"
+      href="../node_modules/@picocss/pico/css/pico.min.css"
+    />
+    <style>
+      h1 {
+        margin-bottom: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="container">
+      <h1>linktest</h1>
+    </header>
+    <section class="container">
+      <input type="text" placeholder="Device Name" id="device-name" />
+      <input type="button" value="Search" id="search-button" />
+    </section>
+    <section class="container">
+      <table>
+        <thead>
+          <tr>
+            <td>Device Name</td>
+            <td>Device IP</td>
+          </tr>
+        </thead>
+        <tbody id="devices-table"></tbody>
+      </table>
+    </section>
+    <script src="./renderer.js"></script>
+  </body>
+</html>

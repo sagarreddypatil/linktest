@@ -1,25 +1,60 @@
 {
-  "name": "linktest",
+  "name": "linktest-desktop",
+  "productName": "linktest-desktop",
   "version": "1.0.0",
-  "description": "A simple graphical utility based on iperf to test internet performance between two points on a network.",
-  "main": "main.js",
+  "description": "",
+  "main": "src/index.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make",
+    "publish": "electron-forge publish",
+    "lint": "echo \"No linting configured\""
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/sagarreddypatil/linktest.git"
+  "keywords": [],
+  "author": {
+    "name": "Sagar Patil",
+    "email": "sagarreddypatil@gmail.com"
   },
-  "author": "Sagar R. Patil",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/sagarreddypatil/linktest/issues"
-  },
-  "homepage": "https://github.com/sagarreddypatil/linktest#readme",
-  "devDependencies": {
-    "electron": "^18.0.3"
+  "config": {
+    "forge": {
+      "packagerConfig": {},
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "linktest_desktop"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin"
+          ]
+        },
+        {
+          "name": "@electron-forge/maker-deb",
+          "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-rpm",
+          "config": {}
+        }
+      ]
+    }
   },
   "dependencies": {
-    "ip": "^1.1.5"
+    "@picocss/pico": "^1.5.0",
+    "electron-squirrel-startup": "^1.0.0"
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "^6.0.0-beta.63",
+    "@electron-forge/maker-deb": "^6.0.0-beta.63",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.63",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.63",
+    "@electron-forge/maker-zip": "^6.0.0-beta.63",
+    "electron": "18.0.3",
+    "electron-reloader": "^1.2.3"
   }
 }
