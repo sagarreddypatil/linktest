@@ -1,6 +1,8 @@
 const udp = require("dgram");
 
 const discoveryPort = 42069;
+const addrMulticast = "229.124.251.222"; // some random class D address lmao
+
 window.discovered = new Map();
 
 var deviceNameInput = document.getElementById("device-name");
@@ -18,13 +20,18 @@ function getDeviceName() {
 getDeviceName();
 
 var server = udp.createSocket("udp4");
-server.bind(discoveryPort);
+server.bind(discoveryPort, () => {
+  server.setBroadcast(true);
+  server.setMulticastTTL(128);
+  server.addMembership(addrMulticast);
+});
+
 server.on("error", (err) => {
   console.log(`Server error:\n${err.stack}`);
   server.close();
 });
 
-function sendDiscovery(requestDiscovery, addrses) {
+function sendDiscovery(requestDiscovery, address) {
   let sendObj = {
     name: getDeviceName(),
     requestDiscovery: requestDiscovery,
@@ -34,11 +41,9 @@ function sendDiscovery(requestDiscovery, addrses) {
   let sendStr = JSON.stringify(sendObj);
 
   if (requestDiscovery) {
-    server.setBroadcast(true);
-    server.send(sendStr, discoveryPort);
+    server.send(sendStr, discoveryPort, addrMulticast);
   } else {
-    server.setBroadcast(false);
-    server.send(sendStr, discoveryPort, addrses);
+    server.send(sendStr, discoveryPort, address);
   }
 }
 
@@ -66,7 +71,9 @@ server.on("message", (msg, rinfo) => {
 
   window.discovered.set(rinfo.address, data.name);
   generateDevicesTable();
-  console.log(`Discovered ${data.name} at ${rinfo.address}`);
+  console.log(
+    `Discovered "${data.name}" at ${rinfo.address}, requesting discovery ${data.requestDiscovery}`
+  );
 
   if (!data.requestDiscovery) return;
 
