@@ -7,14 +7,23 @@ window.discovered = new Map();
 
 var deviceNameInput = document.getElementById("device-name");
 var searchButton = document.getElementById("search-button");
+
 function setDeviceName(name) {
   localStorage.setItem("deviceName", name);
 }
 function getDeviceName() {
-  let deviceName = localStorage.getItem("deviceName") || "";
+  let deviceName = localStorage.getItem("deviceName");
+  if (deviceName == null) {
+    localStorage.setItem(deviceName, "default");
+    deviceName = "default";
+  }
+
   deviceNameInput.value = deviceName;
 
-  return deviceName || "default";
+  if (deviceName == "") {
+    return "default";
+  }
+  return deviceName;
 }
 
 getDeviceName();
@@ -31,7 +40,7 @@ server.on("error", (err) => {
   server.close();
 });
 
-function sendDiscovery(requestDiscovery, address) {
+function sendDiscovery(requestDiscovery) {
   let sendObj = {
     name: getDeviceName(),
     requestDiscovery: requestDiscovery,
@@ -39,16 +48,12 @@ function sendDiscovery(requestDiscovery, address) {
   console.log(`Sending discovery:\n${JSON.stringify(sendObj)}`);
 
   let sendStr = JSON.stringify(sendObj);
-
-  if (requestDiscovery) {
-    server.send(sendStr, discoveryPort, addrMulticast);
-  } else {
-    server.send(sendStr, discoveryPort, address);
-  }
+  server.send(sendStr, discoveryPort, addrMulticast);
 }
 
-deviceNameInput.onchange = (e) => {
-  setDeviceName(e.target.value);
+deviceNameInput.onkeyup = (e) => {
+  setDeviceName(deviceNameInput.value);
+  sendDiscovery(true);
 };
 searchButton.onclick = (e) => {
   sendDiscovery(true);
@@ -77,8 +82,13 @@ server.on("message", (msg, rinfo) => {
 
   if (!data.requestDiscovery) return;
 
+  if (data.name == getDeviceName()) {
+    console.log(`Device requesting discovery is me, weon't send response`);
+    return;
+  }
+
   console.log(`Sending discovery response to ${data.name}`);
-  sendDiscovery(false, rinfo.address);
+  sendDiscovery(false);
 });
 
 let devicesTable = document.getElementById("devices-table");
@@ -91,3 +101,5 @@ function generateDevicesTable() {
     devicesTable.appendChild(row);
   }
 }
+
+window.onload = () => sendDiscovery(true);
