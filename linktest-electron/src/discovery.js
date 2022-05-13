@@ -101,10 +101,14 @@ server.on("message", (msg, rinfo) => {
   }
 
   if (!window.discovered.has(rinfo.address)) {
+    window.discovered.set(rinfo.address, { name: data.name });
     onNewIP(rinfo.address);
+  } else {
+    let curr = window.discovered.get(rinfo.address);
+    curr.name = data.name;
+    window.discovered.set(rinfo.address, curr);
   }
 
-  window.discovered.set(rinfo.address, { name: data.name });
   generateDevicesTable();
   logDiscovery(
     `Discovered "${data.name}" at ${rinfo.address}, requesting discovery ${data.requestDiscovery}`
@@ -113,7 +117,7 @@ server.on("message", (msg, rinfo) => {
   if (!data.requestDiscovery) return;
 
   if (data.name == getDeviceName()) {
-    logDiscovery(`Device requesting discovery is me, weon't send response`);
+    logDiscovery(`Device requesting discovery is me, won't send response`);
     return;
   }
 
