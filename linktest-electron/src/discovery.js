@@ -5,7 +5,7 @@ const { runInThisContext } = require("vm");
 
 const discoveryPort = 8080; // UDP
 const speedtestPort = 8080; // TCP, that's why they're the same port
-const addrMulticast = "239.255.0.0"; // some random class D address lmao
+const addrMulticast = "239.255.23.55"; // some random class D address lmao
 const chunkSize = 1; // KiB
 const testDuration = 5.0; // seconds
 
@@ -88,8 +88,6 @@ function onNewIP(ip) {
 }
 
 server.on("message", (msg, rinfo) => {
-  if (rinfo.port != discoveryPort) return;
-
   let data = JSON.parse(msg.toString());
 
   if (!("name" in data && "requestDiscovery" in data)) {
