@@ -208,7 +208,7 @@ function generateDevicesTable() {
     let pingCell = document.createElement("td");
     if (pingTime == undefined) {
       pingCell.innerText = "Waiting...";
-    } else if (isNaN(pingTime) || pingTIme === null) {
+    } else if (isNaN(pingTime) || pingTime === null) {
       pingCell.innerText = "Error";
     } else {
       pingCell.innerText = pingTime + " ms";
