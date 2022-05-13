@@ -3,8 +3,8 @@ const ping = require("ping");
 const Net = require("net");
 const { runInThisContext } = require("vm");
 
-const discoveryPort = 42069; // UDP
-const speedtestPort = 42069; // TCP, that's why they're the same port
+const discoveryPort = 8080; // UDP
+const speedtestPort = 8080; // TCP, that's why they're the same port
 const addrMulticast = "229.124.251.222"; // some random class D address lmao
 const chunkSize = 1; // MiB
 const testDuration = 5.0; // seconds
