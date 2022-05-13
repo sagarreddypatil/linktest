@@ -206,7 +206,13 @@ function generateDevicesTable() {
     row.appendChild(ipCell);
 
     let pingCell = document.createElement("td");
-    pingCell.innerText = pingTime == undefined ? "N/A" : pingTime + " ms";
+    if (pingTime == undefined) {
+      pingCell.innerText = "Waiting...";
+    } else if (isNaN(pingTime) || pingTIme === null) {
+      pingCell.innerText = "Error";
+    } else {
+      pingCell.innerText = pingTime + " ms";
+    }
     row.appendChild(pingCell);
 
     let testCell = document.createElement("td");
