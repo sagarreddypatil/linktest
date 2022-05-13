@@ -6,7 +6,7 @@ const { runInThisContext } = require("vm");
 const discoveryPort = 42069; // UDP
 const speedtestPort = 42069; // TCP, that's why they're the same port
 const addrMulticast = "229.124.251.222"; // some random class D address lmao
-const chunkSize = 1; // MiB
+const chunkSize = 1; // KiB
 const testDuration = 5.0; // seconds
 
 window.discovered = new Map();
@@ -169,7 +169,7 @@ function linktest(ip) {
 }
 
 async function doTheSpeedtest(socket) {
-  let thiccObject = "A".repeat(1024 * 1024 * chunkSize);
+  let thiccObject = "A".repeat(1024 * chunkSize);
   let start = Date.now();
 
   while (Date.now() - start < testDuration * 1000) {
@@ -210,7 +210,7 @@ function generateDevicesTable() {
     let testCell = document.createElement("td");
     let testButton = document.createElement("button");
     testButton.innerText = "Test";
-    testButton.onclick = () => linktest(ip);
+    testButton.onclick = () => setTimeout(() => linktest(ip), 0);
     testCell.appendChild(testButton);
     row.appendChild(testCell);
 
